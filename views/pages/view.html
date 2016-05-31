@@ -1,0 +1,6 @@
+<!--Шаблон, одноименный метод view которого находится в классе pages.controller.php-->
+
+<!-- выводим ответ на запрос из БД где content и title явл. колонками БД-->
+<h1><?php echo isset($data['view_page']['title']) ? $data['view_page']['title'] : 'Page not found'?></h1>
+
+<?php echo isset($data['view_page']['content']) ? $data['view_page']['content'] : 'Page not found'?>

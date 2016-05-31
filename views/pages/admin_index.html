@@ -1,0 +1,24 @@
+<h3>Pages</h3><br/>
+<table class="table table-striped" style="width: 400px;">
+    <?php foreach($data['pages'] as $value){?>
+    <tr>
+        <td><b><?=$value['title']?></b></td>
+        <td align="right">
+            <a href="/admin/pages/edit/<?=$value['id']?>">
+                <button class="btn btn-sm btn-primary">edit</button>
+            </a>
+            <a href="/admin/pages/delete/<?=$value['id']?>" onclick="return confirmDelete();">
+                <button class="btn btn-sm btn-warning">delete</button>
+            </a>
+        </td>
+    </tr>
+    <?php }?>
+</table>
+
+<br/>
+
+<div>
+    <a href="/admin/pages/add/">
+        <button class="btn btn-sm btn-success">New Page</button>
+    </a>
+</div>
