@@ -1,0 +1,14 @@
+<div class="block_center">
+    <h3>Данные пользователя</h3>
+    <form method="post" action="">
+        <input type="hidden" name="id" value="<?=$data['item']['id']?>" />
+        <input type="text" class="form-control" name="newlogin" required value="<?=$data['item']['login']?>" placeholder="Логин (English)" /><br/>
+        <input type="text" class="form-control" name="newfullname" value="<?=$data['item']['fullname']?>" required placeholder="Фамилия инициалы" /><br/>
+        <input type="text" class="form-control" name="newemail" value="<?=$data['item']['email']?>" required placeholder="Електронная почта" /><br/>
+        <input type="text" class="form-control" name="newrole" value="<?=$data['item']['role']?>" required placeholder="Должность (Українською)" /><br/>
+        <input type="password" class="form-control" name="newpassword" value="" required placeholder="Пароль (English)" /><br/>
+        <button type="submit" class="btn btn-block btn-default">
+            Изменить <span class="glyphicon glyphicon-ok"></span>
+        </button>
+    </form>
+</div>

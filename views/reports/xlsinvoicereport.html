@@ -1,0 +1,42 @@
+<h3>Отчет по накладным в Excel</h3>
+<div class="block_center">
+        <form action="" method="post" role="form">
+            <label for="startdate">Начальная дата </label>
+            <input type="date" class="form-control text-center" id="startdate" name="startdate" required value="<?php echo date("Y-m-d");?>" />
+            <label for="finishdate">Конечная дата </label>
+            <input type="date" class="form-control text-center" id="finishdate" name="finishdate" required value="<?php echo date("Y-m-d");?>" />
+            <br>
+            <button type="submit" class="btn btn-block btn-default">
+                Сохранить в Excel <span class="glyphicon glyphicon-arrow-right"></span>
+            </button>
+        </form>
+</div>
+<hr>
+<?php if($_REQUEST) { ?>
+<table class="table table-bordered text-center">
+    <thead>
+        <tr>
+            <td>Номер накладной</td>
+            <td>Дата накладной</td>
+            <td>ФИО Консультанта</td>
+            <td>ИНН Консультанта</td>
+            <td>Консультантский номер</td>
+            <td>Оператор</td>
+            <td>Детально</td>
+        </tr>
+    </thead>
+    <?php foreach($data as $value) { ?>
+        <tr>
+            <td><?=$value['order_id']?></td>
+            <td><?=$value['order_date']?></td>
+            <td><?=$value['consult_name']?></td>
+            <td><?=$value['tax_id']?></td>
+            <td><?=$value['consult_num']?></td>
+            <td><?=$value['operator_name']?></td>
+            <td>
+                <a href="/invoices/printinvoices/<?=$value['order_id']?>"><button class="btn btn-xs"><span class="glyphicon glyphicon-search"></span></button></a>
+            </td>
+        </tr>
+    <?php } ?>
+</table>
+<?php } ?>

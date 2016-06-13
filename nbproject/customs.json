@@ -1,5 +1,7 @@
 {
-    "elements": {},
+    "elements": {
+        "input": {}
+    },
     "attributes": {
         "integrity": {
             "context": "link"

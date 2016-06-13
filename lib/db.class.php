@@ -32,6 +32,7 @@ class DB {
         }
         return $data;//возвращаем свойство с результатом ответа от БД
     }
+    
     public function escape($str){
         return mysqli_escape_string($this->connection, $str);
     }

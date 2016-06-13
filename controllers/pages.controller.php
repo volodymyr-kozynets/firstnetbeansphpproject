@@ -14,7 +14,7 @@ class PagesController extends Controller{
     }
 
     public function index(){ //метод (установленный по умолчанию) index контроллера Pages будет выводить список всех страниц
-        $this->data['pages'] = $this->model->getList(); //записываем свойство $data нашего контроллера
+        $this->data['pages'] = $this->model->getList(); //записываем свойство $data нашего контроллера 
     }
     
     public function view(){ //метод view получает алиас страницы из параметров запроса (то что идет четвертое по счету в URI)

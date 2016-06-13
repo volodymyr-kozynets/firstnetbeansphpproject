@@ -14,8 +14,9 @@ class UsersController extends Controller {
             if( $user && $user['is_active'] && $hash == $user['password'] ){ //проверяем правильность введенного логина и пароля и что пользователь прошел аутентификацию
                 Session::set('login', $user['login']);
                 Session::set('role', $user['role']);
+                Session::set('fullname', $user['fullname']);
             }
-            Router::redirect('/admin/');
+            Router::redirect('/default/');
         }
     }
     

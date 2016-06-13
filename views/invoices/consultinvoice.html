@@ -1,0 +1,64 @@
+<div class="block_center">
+<h3>Выдача продукции со склада ЦОК</h3>
+<br>
+<form action="" method="post" role="form">
+        <div class="form-group">
+            <table>
+                <tr>    
+                    <td><label for="order_id">Номер накладной</label></td>
+                    <td><input name="order_id" id="order_id" class="form-control text-center" type="text" readonly value="новый"/></td>
+                </tr>
+                <tr>
+                    <td><label for="order_date">Дата</label></td>
+                    <td>
+                        <input name="order_date" id="order_date" type="hidden" readonly value="<?php echo date("Y.m.d");?>" /> <!--эта дата передается в запросе POST в формате даты для MySQL-->
+                        <input name="" id="false_date" class="form-control text-center" type="text" readonly value="<?php echo date("d.m.Y");?>" /> <!--эта дата только для отображения пользователям-->
+                    </td>
+                </tr>
+                <tr>    
+                    <td><label for="consult_name">ФИО Консультанта</label></td>
+                    <td><input name="consult_name" id="consult_name" class="form-control text-center" type="text" required maxlength="255"/></td>
+                </tr>
+                <tr>
+                    <td><label for="tax_id">Идентификационный код</label></td>
+                    <td><input name="tax_id" id="tax_id" class="form-control text-center" type="text" maxlength="10" readonly value="0000000000" /></td>
+                </tr>
+                <tr>    
+                    <td><label for="consult_num">Консультантский номер</label></td>
+                    <td><input name="consult_num" id="consult_num" class="form-control text-center" type="text" required maxlength="9" value="000000000" /></td>
+                </tr>
+                <tr>    
+                    <td><label for="comment">Комментарий</label></td>
+                    <td><textarea name="comment" id="comment" class="form-control text-center" maxlength="255"></textarea></td>
+                </tr>
+            </table>
+            <input name="operator_name" id="operator_name" type="hidden" value="<?=Session::get('fullname')?>" />
+            <input name="operator_role" id="operator_role" type="hidden" value="<?=Session::get('role')?>" />
+        </div>
+
+<h3>Заказ продукции</h3>
+    <table class="table table-striped" >
+        <thead>
+            <tr>
+                <td>Код продукции</td>
+                <td>Наименование</td>
+                <td>Количество</td>
+                <td>Цена</td>
+            </tr>
+        </thead>
+    <?php foreach($data as $item) { ?>
+        <tr>
+                <input type="hidden"  name="product_id_<?=$item['id']?>" id="product_id" value="<?=$item['id']?>" />
+            <td><?=$item['code']?></td><input type="hidden" name="product_code_<?=$item['id']?>" value="<?=$item['code']?>" />
+            <td><?=$item['name']?></td><input type="hidden" name="product_name_<?=$item['id']?>" value="<?=$item['name']?>" />
+            <td><input type="number" name="product_qnty_<?=$item['id']?>" id="product_qnty" value="0" /></td>
+            <td><?=$item['price']?></td><input type="hidden" name="product_price_<?=$item['id']?>" value="<?=$item['price']?>"/>
+        </tr>
+    <?php } ?>
+    </table>
+    <button type="submit" class="btn btn-default" style="width: 100%;">
+        Продолжить <span class="glyphicon glyphicon-arrow-right"></span>
+    </button>
+</form>
+</div>
+    

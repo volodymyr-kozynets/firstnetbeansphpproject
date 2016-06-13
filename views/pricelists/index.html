@@ -1,0 +1,56 @@
+<script type="text/javascript">
+    jQuery(function($){
+    $("#code").mask("99-999999");
+    });
+    $(function(){
+        $('#price').on('input', function(){
+            this.value = this.value.replace(/^\.|[^\d\.]|\.(?=.*\.)|^0+(?=\d)/g, '');
+        });
+    });
+</script>
+
+    <h3>Добавление продукции</h3>
+
+        <form action="" method="post" class="form-inline" >
+            <div class="form-group">
+                <table>
+                    <tr>
+                        <td><input type="text" name="code" id="code" placeholder="Код продукции" pattern="[0-9]{2}-[0-9]{6}" class="form-control" required style="width: 100%;"/></td>
+                        <td style="width:50%;"><input type="text" name="name" id="name" placeholder="Наименование" class="form-control" required style="width: 100%;"/></td>
+                        <td><input type="text" name="price" id="price" placeholder="Цена" pattern="[0-9]{1,}\.[0-9]{2}" class="form-control" required style="width: 100%;"/></td>
+                        <td>
+                            <button type="submit" class="btn btn-default">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+
+    <h3>Очистка каталога</h3>
+    <div class="form-group">
+        <a href="/default/pricelists/alldelete" onclick="return confirmDelete();"><button class="btn btn-default">Удалить все записи <span class="glyphicon glyphicon-trash"></span></button></a>
+    </div>
+    <h3>Каталог продукции</h3>
+    <table class="table table-striped" >
+            <thead>
+                <tr>
+                    <td>Код продукции</td>
+                    <td>Наименование</td>
+                    <td>Цена</td>
+                    <td></td>
+                </tr>
+            </thead>
+        <?php foreach($data as $item) { ?>
+            <tr>
+                <td><?=$item['code']?></td>
+                <td><?=$item['name']?></td>
+                <td><?=$item['price']?></td>
+                <td>
+                    <a href="/default/pricelists/delete/<?=$item['id']?>" onclick="return confirmDelete();"><button class="btn btn-xs"><span class="glyphicon glyphicon-remove"></span></button></a>
+                    <a href="/default/pricelists/edit/<?=$item['id']?>"><button class="btn btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></a>
+                </td>
+            </tr>
+        <?php } ?>
+    </table>

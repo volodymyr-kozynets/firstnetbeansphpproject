@@ -23,11 +23,21 @@ class App {
         
         //Проверяем выполнение пользователем входя в систему
         //При каждом запросе к роуту admin необходимо проверять имеет ли пользователь на это право
-        $layout = self::$router->getRoute();
+        /*$layout = self::$router->getRoute();
         if( $layout == 'admin' && Session::get('role') !='admin'){
             if( $controller_method !='admin_login' ){
                 Router::redirect('/admin/users/login');
             }
+        }*/
+        $layout = self::$router->getRoute();
+        if(empty(Session::get('login')) && empty(Session::get('role'))){
+            if( $controller_method !='admin_login' ){
+                Router::redirect('/admin/users/login');
+            }
+        }
+        $adminlayout = self::$router->getController();
+        if($adminlayout == 'administrations' && Session::get('role') != 'superadmin'){
+                Router::redirect('/default/');
         }
         
         //В Зависимости от заданного имени контроллера в URI, создаем соответствующий обьект (напр. если контроллер был Pages то создается обьект класса Pages)

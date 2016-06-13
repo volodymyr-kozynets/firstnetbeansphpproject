@@ -14,6 +14,8 @@ class Session {
     }
     
     public static function flash(){
+        /*echo "<pre>";
+        print_r(self::$flash_message);*/
         echo self::$flash_message;
         self::$flash_message = null;
     }

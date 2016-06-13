@@ -1,0 +1,22 @@
+<h3>Управление пользователями</h3>
+<table class="table table-striped" >
+            <thead>
+                <tr>
+                    <td>Пользователь</td>
+                    <td>Логин</td>
+                    <td>Роль</td>
+                    <td></td>
+                </tr>
+            </thead>
+        <?php foreach($data as $item) { ?>
+            <tr>
+                <td><?=$item['fullname']?></td>
+                <td><?=$item['login']?></td>
+                <td><?=$item['role']?></td>
+                <td>
+                    <a href="/default/administrations/delete/<?=$item['id']?>" onclick="return confirmUserDelete();"><button class="btn btn-xs"><span class="glyphicon glyphicon-remove"></span></button></a>
+                    <a href="/default/administrations/edit/<?=$item['id']?>"><button class="btn btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></a>
+                </td>
+            </tr>
+        <?php } ?>
+    </table>

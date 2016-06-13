@@ -1,0 +1,48 @@
+<h3>Товарный отчет в Excel</h3>
+<div class="block_center form-group">
+    <form action="" method="post" role="form">
+        <label for="startdate">Начальная дата </label>
+        <input type="date" class="form-control text-center" id="startdate" name="startdate" required value="<?php echo date("Y-m-d");?>" />
+        <label for="finishdate">Конечная дата </label>
+        <input type="date" class="form-control text-center" id="finishdate" name="finishdate" required value="<?php echo date("Y-m-d");?>" />
+        <label for="product">Наименование продукции </label>
+        <select class="form-control text-center" id="product" name="product" required>
+            <option selected="" value=""></option>
+            <?php for($i=0; $i<count($data['product']);$i++) { ?>
+            <option value="<?=$data['product'][$i]['code']?>">
+            <?=$data['product'][$i]['code']." ".$data['product'][$i]['name']." (".$data['product'][$i]['price'].")"?>
+            </option>
+            <?php  } ?>
+        </select>
+        <br>
+        <button type="submit" class="btn btn-block btn-default">
+           Сохранить в Excel <span class="glyphicon glyphicon-arrow-right"></span>
+        </button>
+        <br>
+    </form>
+</div>
+<hr>
+<?php if($_REQUEST) { ?>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <td>Код продукции</td>
+            <td>Наименование продукции</td>
+            <td>Количество продукции</td>
+            <td>Номер накладной</td>
+            <td>Дата накладной</td>
+        </tr>
+    </thead>
+    <?php foreach($data as $key => $value) { ?>
+        <?php if($key != 'product') { ?>
+        <tr>
+            <td><?=$value['product_code']?></td>
+            <td><?=$value['product_name']?></td>
+            <td><?=$value['product_qnty']?></td>
+            <td><?=$value['order_id']?></td>
+            <td><?=$value['order_date']?></td>
+        </tr>
+        <?php } ?>
+    <?php } ?>
+</table>
+<?php } ?>

@@ -4,10 +4,10 @@ class Controller {
     
     protected $data; // содержит всю информацию кот.буд.передаваться из контроллера в представление
     
-    protected $model; // для досутпа к обьекту модели
+    protected $model; // для доступа к обьекту модели
     
     protected $params; // параметры полученные из строки запроса
-    
+
     public function getData(){
         return $this->data;
     }

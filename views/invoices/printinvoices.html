@@ -1,0 +1,130 @@
+<?php
+function num2str($num) {
+	$nul="нуль";
+	$ten=array(
+		array("","один","два","три","чотири","п'ять","шість","сім", "вісім","дев'ять"),
+		array("","одна","дві","три","чотири","п'ять","шість","сім", "вісімь","дев'ять"),
+	);
+	$a20=array("десять","одинадцять","дванадцять","тринадцять","чотирнадцять" ,"п'ятнадцять","шістнадцять","сімнадцять","вісімнадцять","дев'ятнадцять");
+	$tens=array(2=>"двадцять","тридцять","сорок","п'ятдесят","шістдесят","сімдесят" ,"вісімдесят","дев'яносто");
+	$hundred=array("","сто","двісті","триста","чотириста","п'ятсот","шістсот", "сімсот","вісімсот","дев'ятсот");
+	$unit=array( // Units
+		array("копійка" ,"копійки" ,"копійок",	 1),
+		array("гривня"   ,"гривні"   ,"гривень"    ,0),
+		array("тисяча"  ,"тисячі"  ,"тисяч"     ,1),
+		array("мільйон" ,"мільйона","мільйонів" ,0),
+		array("мільярд","мільярда","мільярдів",0),
+	);
+	//
+	list($rub,$kop) = explode('.',sprintf("%015.2f", floatval($num)));
+	$out = array();
+	if (intval($rub)>0) {
+		foreach(str_split($rub,3) as $uk=>$v) { // by 3 symbols
+			if (!intval($v)) continue;
+			$uk = sizeof($unit)-$uk-1; // unit key
+			$gender = $unit[$uk][3];
+			list($i1,$i2,$i3) = array_map('intval',str_split($v,1));
+			// mega-logic
+			$out[] = $hundred[$i1]; # 1xx-9xx
+			if ($i2>1) $out[]= $tens[$i2].' '.$ten[$gender][$i3]; # 20-99
+			else $out[]= $i2>0 ? $a20[$i3] : $ten[$gender][$i3]; # 10-19 | 1-9
+			// units without rub & kop
+			if ($uk>1) $out[]= morph($v,$unit[$uk][0],$unit[$uk][1],$unit[$uk][2]);
+		} //foreach
+	}
+	else $out[] = $nul;
+	$out[] = morph(intval($rub), $unit[1][0],$unit[1][1],$unit[1][2]); // rub
+	$out[] = $kop.' '.morph($kop,$unit[0][0],$unit[0][1],$unit[0][2]); // kop
+	return trim(preg_replace('/ {2,}/', ' ', join(' ',$out)));
+}
+
+function morph($n, $f1, $f2, $f5) {
+	$n = abs(intval($n)) % 100;
+	if ($n>10 && $n<20) return $f5;
+	$n = $n % 10;
+	if ($n>1 && $n<5) return $f2;
+	if ($n==1) return $f1;
+	return $f5;
+}
+?>
+
+<?php if($data) { ?>
+
+<table class="invoice_buttons">
+    <tr>
+        <td><a href="/invoices/deleteinvoice/<?=$data[0]['order_id']?>" onclick="return confirmInvoiceDelete();"><button class="btn btn-default">Отменить/удалить накладную <span class="glyphicon glyphicon-trash"></span></button></a></td>
+        <td><a href="/invoices/printinvoices/<?=$data[0]['order_id']?>" onclick="window.print();"><button class="btn btn-default">Сохранить/распечатать накладную <span class="glyphicon glyphicon-print"></span></button></a></td>
+    </tr>
+</table>
+
+<hr>
+
+<div class="invoice_1">
+    <table class="rekvizity">
+        <tr><td colspan="2">Постачальник:</td><td colspan="2">ТОВ "Мері Кей (Україна) ЛІмітед"</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td colspan="2">ЄДРПОУ:</td><td colspan="2">24733492</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td colspan="2">Адреса:</td><td colspan="2">м.Київ, вул. Нововокзальная, 2</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td colspan="2">Банківські реквізити :</td><td colspan="2">р/р № 26002426486 в ПАТ "Райффайзен банк Аваль", м. Київ ,</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td colspan="2"></td><td colspan="2">МФО 380805, код ЄДРПОУ 24733492</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td colspan="2">Місце складання: </td><td colspan="2">м. Київ</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td colspan="8"><br></td></tr>
+        <tr><td colspan="8" class="text-center" style="font: bold 110% Bookman Old Style;"><h4>НАКЛАДНА №0000<?=$data[0]['order_id']?></h3></td></tr>
+        <tr><td colspan="8" class="text-center" style="font: bold 110% Bookman Old Style;">від <?=$data[0]['order_date']?> р.</td></tr>
+        <tr><td colspan="8"><br></td></tr>
+        <tr class="text-center"><td>Одержувач:</td><td><?=$data[0]['consult_name']?></td><td></td><td><b>ИНН: </b><?=$data[0]['tax_id']?></td><td></td><td></td><td><b>Конс.номер:</b></td><td><?php if(!empty($data[0]['consult_num'])){echo $data[0]['consult_num'];}else{echo 'новичек';} ?></td></tr>
+        <tr><td colspan="8"><br></td></tr>
+    </table>
+    <table class="table-bordered invoice-table">
+        <?php $result=0 ?>
+        <tr class="text-center"><td> № </td><td colspan="3" style="width: 50%">Найменування товару</td><td>Одиниця<br>виміру</td><td>Кількість</td><td>Ціна, Грн.</td><td>Сума, Грн.</td></tr>
+        <?php for($i=0; $i<count($data); $i++) {?>
+        <tr><td class="text-center"><?=$i+1?></td><td colspan="3"> <?=$data[$i]['product_code']." ".$data[$i]['product_name']?></td><td class="text-center">шт.</td><td class="text-center"><?=$data[$i]['product_qnty']?></td><td class="text-center"><?=$data[$i]['product_price']?></td><td class="text-center"><?=number_format(($data[$i]['product_qnty']*$data[$i]['product_price']),2,'.','')?></td></tr>
+        <?php $result += ($data[$i]['product_qnty']*$data[$i]['product_price']) ?>
+        <?php } ?>
+        <tr class="text-center"><td rowspan="3" colspan="5"></td><td colspan="2">Разом без ПДВ:</td><td><?= number_format((($result)/1.2), 2,'.','') ?></td></tr>
+        <tr class="text-center"><td colspan="2">ПДВ (20%)</td><td><?= number_format(($result)-(($result)/1.2), 2,'.','') ?></td></tr>
+        <tr class="text-center"><td colspan="2">Всього з ПДВ:</td><td><?= number_format($result, 2,'.','') ?></td></tr>
+    </table>
+    <p><b>Всього на суму:</b> <?= num2str($result)?></p>
+    <br>
+    <table>
+        <tr><td class="text-left">Відвантажив: <?=$data[0]['operator_name']?></td><td class="text-right">Отримав:_____________________</td></tr>
+        <tr><td class="text-left"><?=$data[0]['operator_role']?></td><td class="text-right">ПІБ,  підпис</td></tr>
+    </table>
+        <hr>
+</div>
+<div class="invoice_2" <?php if(count($data)>6){ ?>style="page-break-before: always;"<?php } ?> >
+                        <?php if(count($data)>6){ ?><br><br><br><?php } ?>
+    <table class="rekvizity">
+        <tr><td colspan="2">Постачальник:</td><td colspan="2">ТОВ "Мері Кей (Україна) ЛІмітед"</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td colspan="2">ЄДРПОУ:</td><td colspan="2">24733492</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td colspan="2">Адреса:</td><td colspan="2">м.Київ, вул. Нововокзальная, 2</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td colspan="2">Банківські реквізити :</td><td colspan="2">р/р № 26002426486 в ПАТ "Райффайзен банк Аваль", м. Київ ,</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td colspan="2"></td><td colspan="2">МФО 380805, код ЄДРПОУ 24733492</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td colspan="2">Місце складання: </td><td colspan="2">м. Київ</td><td></td><td></td><td></td><td></td></tr>
+        <tr><td colspan="8"><br></td></tr>
+        <tr><td colspan="8" class="text-center" style="font: bold 110% Bookman Old Style;"><h4>НАКЛАДНА №0000<?=$data[0]['order_id']?></h4></td></tr>
+        <tr><td colspan="8" class="text-center" style="font: bold 110% Bookman Old Style;">від <?=$data[0]['order_date']?> р.</td></tr>
+        <tr><td colspan="8"><br></td></tr>
+        <tr class="text-center"><td>Одержувач:</td><td><?=$data[0]['consult_name']?></td><td></td><td><b>ИНН: </b><?=$data[0]['tax_id']?></td><td></td><td></td><td>Конс.номер:</td><td><?php if(!empty($data[0]['consult_num'])){echo $data[0]['consult_num'];}else{echo 'новичек';} ?></td></tr>
+        <tr><td colspan="8"><br></td></tr>
+    </table>
+    <table class="table-bordered invoice-table">
+        <?php $result=0 ?>
+        <tr class="text-center"><td> № </td><td colspan="3" style="width: 50%">Найменування товару</td><td>Одиниця<br>виміру</td><td>Кількість</td><td>Ціна, Грн.</td><td>Сума, Грн.</td></tr>
+        <?php for($i=0; $i<count($data); $i++) {?>
+        <tr><td class="text-center"><?=$i+1?></td><td colspan="3"> <?=$data[$i]['product_code']." ".$data[$i]['product_name']?></td><td class="text-center">шт.</td><td class="text-center"><?=$data[$i]['product_qnty']?></td><td class="text-center"><?=$data[$i]['product_price']?></td><td class="text-center"><?=number_format(($data[$i]['product_qnty']*$data[$i]['product_price']),2,'.','')?></td></tr>
+        <?php $result += ($data[$i]['product_qnty']*$data[$i]['product_price']) ?>
+        <?php } ?>
+        <tr class="text-center"><td rowspan="3" colspan="5"></td><td colspan="2">Разом без ПДВ:</td><td><?= number_format((($result)/1.2), 2,'.','') ?></td></tr>
+        <tr class="text-center"><td colspan="2">ПДВ (20%)</td><td><?= number_format(($result)-(($result)/1.2), 2,'.','') ?></td></tr>
+        <tr class="text-center"><td colspan="2">Всього з ПДВ:</td><td><?= number_format($result, 2,'.','') ?></td></tr>
+    </table>
+        <p><b>Всього на суму:</b> <?= num2str($result)?></p>
+    <br>
+    <table>
+        <tr><td class="text-left">Відвантажив: <?=$data[0]['operator_name']?></td><td class="text-right">Отримав:_____________________</td></tr>
+        <tr><td class="text-left"><?=$data[0]['operator_role']?></td><td class="text-right">ПІБ,  підпис</td></tr>
+    </table>
+</div>
+<?php } ?>

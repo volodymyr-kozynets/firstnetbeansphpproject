@@ -22,3 +22,9 @@ Config::set('db.password','');
 Config::set('db.db_name','mvc');
 
 Config::set('salt', 'z3dc8vd9m39m9cmcdkm10dc'); //спец.настройка - соль - строка со случайным набором символов - используется с генерацией хеша пароля
+
+Config::set('cells', array(
+    'A'=>'code',
+    'B'=>'name',
+    'C'=>'price'
+    ));

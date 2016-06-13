@@ -1,0 +1,12 @@
+{
+    "name": "anna/firstnetbeansphpproject",
+    "authors": [
+        {
+            "name": "Kozynets Volodymyr",
+            "email": "vladdimir@inbox.ru"
+        }
+    ],
+    "require": {
+        "phpoffice/phpexcel": "^1.8"
+    }
+}

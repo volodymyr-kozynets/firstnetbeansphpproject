@@ -1,4 +1,4 @@
-<!--главный шаблон для роута default, будет включать общие для приложения елементы таке как хедеры и футеры-->
+<!--главный шаблон для роута admin, будет включать общие для приложения елементы таке как хедеры и футеры-->
 <!DOCTYPE html>
 <html>
     <head>
@@ -17,7 +17,7 @@
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
           <div class="navbar-header">
-            <a class="navbar-brand" href="/"><?=Config::get('site_name')?> - Admin </a>
+            <a class="navbar-brand" href="/"><?=Config::get('site_name')?> - Вход </a>
           </div>
           <div id="navbar" class="collapse navbar-collapse">
             <?php if(Session::get('login')) { ?>
