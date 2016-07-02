@@ -15,8 +15,10 @@ class UsersController extends Controller {
                 Session::set('login', $user['login']);
                 Session::set('role', $user['role']);
                 Session::set('fullname', $user['fullname']);
+                Router::redirect('/default/');
+            }else{
+                Session::setFlash('Пароль или логин не верны!');
             }
-            Router::redirect('/default/');
         }
     }
     

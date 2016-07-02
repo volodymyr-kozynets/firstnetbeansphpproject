@@ -14,9 +14,11 @@
                 <td><?=$item['login']?></td>
                 <td><?=$item['role']?></td>
                 <td>
+                <?php if($item['role'] !== 'superadmin') { ?>
                     <a href="/default/administrations/delete/<?=$item['id']?>" onclick="return confirmUserDelete();"><button class="btn btn-xs"><span class="glyphicon glyphicon-remove"></span></button></a>
                     <a href="/default/administrations/edit/<?=$item['id']?>"><button class="btn btn-xs"><span class="glyphicon glyphicon-pencil"></span></button></a>
                 </td>
+                <?php } ?>
             </tr>
         <?php } ?>
     </table>
